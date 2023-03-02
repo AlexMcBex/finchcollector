@@ -2,13 +2,15 @@
 {% load static %}
 {% block content %}
 <h1>Finch List</h1>
+<div class="container finches-container">
 {% for bird in finch %}
-    <div style="border: 4px solid {{ bird.color  }}" class="card">
+    <div style="border: 10px solid {{ bird.color  }}; width: 20rem;" class="card bird-card">
         <div class="card-content">
-            <span class="cardtitle">{{ bird.name }}</span>
+           <a href="{% url 'detail' bird.id %}"> <span class="cardtitle">{{ bird.name }}</span></a>
             <p>Color: {{ bird.color }}</p>
             <p>Age: {{ bird.age }}</p>
         </div>
     </div>
 {% endfor %}
+</div>
 {% endblock %}
