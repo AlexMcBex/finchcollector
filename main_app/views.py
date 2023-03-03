@@ -26,3 +26,11 @@ def finch_detail(request, finch_id):
 class FinchCreate(CreateView):
     model = Finch
     fields = '__all__'
+
+class FinchUpdate(UpdateView):
+    model = Finch
+    fields =['color', 'age']
+
+class FinchDelete(DeleteView):
+    model = Finch
+    success_url = '/finches/'
