@@ -24,8 +24,11 @@ def finch_index(request):
 
 def finch_detail(request, finch_id):
     finch = Finch.objects.get(id=finch_id)
+    id_list = finch.nests.all().values_list('id')
+    nests_finch_hasnt_been = Nest.objects.exclude(id__in=id_list)
     ribbon_form = RibbonForm()
-    return render(request, 'finch/detail.html', { 'finch': finch , 'ribbon_form': ribbon_form})
+    return render(request, 'finch/detail.html', { 'finch': finch , 'ribbon_form': ribbon_form, 'nests': nests_finch_hasnt_been})
+
 
 class FinchCreate(CreateView):
     model = Finch
@@ -45,6 +48,14 @@ def add_ribbon(request, finch_id):
         new_ribbon = form.save(commit=False)
         new_ribbon.finch_id = finch_id
         new_ribbon.save()
+    return redirect('detail', finch_id=finch_id)
+
+def assoc_nest(request, finch_id, nest_id):
+    Finch.objects.get(id=finch_id).nests.add(nest_id)
+    return redirect('detail', finch_id=finch_id)
+
+def unassoc_nest(request, finch_id, nest_id):
+    Finch.objects.get(id=finch_id).nests.remove(nest_id)
     return redirect('detail', finch_id=finch_id)
 
 class NestList(ListView):

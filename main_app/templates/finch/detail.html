@@ -30,12 +30,12 @@
     {% if finch.has_ribbon %}
     <div class="card-panel teal-text center-align">
       {{ finch.name }} looks stylin'.
-  </div>
+    </div>
     {% else %}
     <div class="card-panel red-text center-align">
       {{ finch.name }} would look better with a ribbon.
-  </div>
-{% endif %}
+    </div>
+    {% endif %}
     <table class="striped" style="border: 5px solid black">
       <thead>
         <tr>
@@ -54,16 +54,61 @@
     </table>
   </div>
 </div>
-<script>
-  const dateEl = document.getElementById('id_date')
-  M.Datepicker.init(dateEl, {
+<hr>
+<div class="row">
+    <div class="col s6">
+      <h3>{{finch.name}}'s visited nests</h3>
+      {% if finch.nests.count %}
+      {% for nest in finch.nests.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            A nest {{ nest.location }} in {{ nest.city }}
+          </span>
+          </div>
+          <div class="card-action">
+            <form action="{% url 'unassoc_nest' finch.id nest.id %}" method="POST">
+              {% csrf_token %}
+              <input type="submit" value="Remove" class="btn red">
+            </form>
+          </div>
+        </div>
+        {%endfor%}
+        {% else %}
+        <h5>No Nests :(</h5>
+        {% endif %}
+      </div>
+    <div class="col s6">
+      <h3>Visitable Nests</h3>
+      {% if nests.count %}
+      {% for nest in nests.all %}
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            A nest {{ nest.location }} in {{ nest.city }}
+          </span>
+        </div>
+        <div class="card-action">
+          <form action="{% url 'assoc_nest' finch.id nest.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn" value="Visit">
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+</div>
+  <script>
+    const dateEl = document.getElementById('id_date')
+    M.Datepicker.init(dateEl, {
       format: 'yyyy-mm-dd',
       defaultDate: new Date(),
       setDefaultDate: true,
       autoClose: true
-  })
+    })
 
-  const selectEl = document.getElementById('id_color')
-  M.FormSelect.init(selectEl)
-</script>
-{% endblock %}
+    const selectEl = document.getElementById('id_color')
+    M.FormSelect.init(selectEl)
+  </script>
+  {% endblock %}

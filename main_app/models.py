@@ -26,7 +26,7 @@ class Finch(models.Model):
     nests = models.ManyToManyField(Nest)
 
     def has_ribbon(self):
-        return self.ribbon_set.all > 0
+        return self.ribbon_set.count() > 0
     
     def __str__ (self):
         return (f'{self.name}, a {self.color} finch, {self.age} years old')
