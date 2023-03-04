@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Nest List</h1>
+
+    {% for nest in object_list %}
+        <div class="card">
+            <a href="{% url 'nests_detail' nest.id %}">
+                <div class="card-content">
+                    <span class="card-title">
+                        A nest {{ nest.location }} in {{ nest.city }}
+                    </span>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+{% endblock %}
