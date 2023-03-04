@@ -21,6 +21,21 @@
     </div>
   </div>
   <div class="col s6">
+    <form action="{% url 'add_ribbon' finch.id %}" method="POST">
+      {% csrf_token %}
+      {{ ribbon_form.as_p }}
+      <input type="submit" class="btn" value="Gift Ribbon">
+    </form>
+    <br>
+    {% if finch.has_ribbon %}
+    <div class="card-panel teal-text center-align">
+      {{ finch.name }} looks stylin'.
+  </div>
+    {% else %}
+    <div class="card-panel red-text center-align">
+      {{ finch.name }} would look better with a ribbon.
+  </div>
+{% endif %}
     <table class="striped" style="border: 5px solid black">
       <thead>
         <tr>
@@ -39,4 +54,16 @@
     </table>
   </div>
 </div>
+<script>
+  const dateEl = document.getElementById('id_date')
+  M.Datepicker.init(dateEl, {
+      format: 'yyyy-mm-dd',
+      defaultDate: new Date(),
+      setDefaultDate: true,
+      autoClose: true
+  })
+
+  const selectEl = document.getElementById('id_color')
+  M.FormSelect.init(selectEl)
+</script>
 {% endblock %}
